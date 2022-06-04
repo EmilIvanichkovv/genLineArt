@@ -1,10 +1,16 @@
 from curses import start_color
 from PIL import Image, ImageDraw, ImageChops
 import random
+import colorsys
+import sys
 
 def generate_random_color():
-    return(random.randint(0,225),random.randint(0,225),random.randint(0,225))
-
+    h = random.random()
+    s = 1
+    v = 1
+    float_rgb = colorsys.hsv_to_rgb(h,s,v)
+    rgb = [int(x * 255) for x in float_rgb]
+    return tuple (rgb)
 
 def color_interpolate(start_color, end_color, factor: float):
     # Find the color that is exactly factor (0.0 - 1.0) between the two colors.
