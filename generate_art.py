@@ -39,6 +39,23 @@ def generate_art():
             random.randint(padding_px, image_size_px - padding_px))
         points.append(random_point)
 
+    # Center image.
+    # Find the bounding box.
+    min_x = min([p[0] for p in points])
+    max_x = max([p[0] for p in points])
+    min_y = min([p[1] for p in points])
+    max_y = max([p[1] for p in points])
+
+    # Find offsets.
+    x_offset = (min_x - padding_px) - (image_size_px - padding_px - max_x)
+    y_offset = (min_y - padding_px) - (image_size_px - padding_px - max_y)
+
+    # Move all points by offset.
+    for i, point in enumerate(points):
+        points[i] = (point[0] - x_offset // 2, point[1] - y_offset // 2)
+
+
+    # Draw the lines
     thickness = 0
     n_point = len(points) - 1
     for i, point in enumerate(points):
