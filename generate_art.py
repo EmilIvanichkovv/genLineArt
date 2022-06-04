@@ -1,5 +1,5 @@
 from curses import start_color
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageChops
 import random
 
 def generate_random_color():
@@ -16,17 +16,16 @@ def color_interpolate(start_color, end_color, factor: float):
     return tuple(new_color_rgb)
 
 def generate_art():
-    print("Hello world")
     image_size_px = 250
     padding_px = 20
-    image_bg_color = (255,255,255)
+    image_bg_color = (0,0,0)
     start_color = generate_random_color()
     end_color = generate_random_color()
 
     image = Image.new(
         "RGB", 
         size=(image_size_px, image_size_px), 
-        color=(255,255,255))
+        color=image_bg_color)
     # Draw some lines
 
     draw = ImageDraw.Draw(image)
@@ -59,6 +58,11 @@ def generate_art():
     thickness = 0
     n_point = len(points) - 1
     for i, point in enumerate(points):
+        
+        # Overlay canvas
+        overlay_image = Image.new("RGB", size=(image_size_px, image_size_px), color=image_bg_color)
+        overlay_draw = ImageDraw.Draw(overlay_image)
+
         p1 = point
         if i == n_point:
             p2 = points[0]
@@ -69,8 +73,9 @@ def generate_art():
         color_factor = i /n_point
         line_color = color_interpolate(start_color, end_color, color_factor)
         thickness = random.randint(1,i+1)
-        draw.line(line_xy, fill= line_color, width=thickness)
-    
+        overlay_draw.line(line_xy, fill= line_color, width=thickness)
+        image = ImageChops.add(image, overlay_image)
+
     image.save("test.png")
 
 generate_art()
