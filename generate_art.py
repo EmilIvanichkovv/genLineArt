@@ -22,8 +22,8 @@ def color_interpolate(start_color, end_color, factor: float):
     return tuple(new_color_rgb)
 
 def generate_art():
-    image_size_px = 250
-    padding_px = 20
+    image_size_px = 1500
+    padding_px = 120
     image_bg_color = (0,0,0)
     start_color = generate_random_color()
     end_color = generate_random_color()
@@ -78,7 +78,7 @@ def generate_art():
         line_xy = (p1,p2)
         color_factor = i /n_point
         line_color = color_interpolate(start_color, end_color, color_factor)
-        thickness = random.randint(1,i+1)
+        thickness = random.randint(5,5*i+5)
         overlay_draw.line(line_xy, fill= line_color, width=thickness)
         image = ImageChops.add(image, overlay_image)
 
